@@ -1,0 +1,157 @@
+#SET UP####
+
+library(data.table)
+library(dplyr)
+library(lubridate)
+library(reshape2)
+library(ggplot2)
+library("ggsci")
+library(readxl)
+
+####2011-2021####
+
+###specify the year list (drop '20') - change this to include the years you want to predict for
+###yearlist = as.character(seq(11, 21, 1))
+
+###yearlist="11"
+
+yearlist = as.character(seq(11, 21, 1))
+
+for (i in 1:length(yearlist)){
+
+  
+  ##this code loops in and extracts 1 year at a time
+  
+  
+df <- 
+       fread("C:/Users/Emma-Jane Murray/University College Dublin/from_jamie/monthly_11_21.csv",
+             select=c("tag", "herd", "dob", "sex", "breed", 
+                                         paste("jan", yearlist[i], sep="_"),
+                                         paste("feb", yearlist[i], sep="_"),
+                                         paste("mar", yearlist[i], sep="_"),
+                                         paste("apr", yearlist[i], sep="_"),
+                                         paste("may", yearlist[i], sep="_"),
+                                         paste("jun", yearlist[i], sep="_"),
+                                         paste("jul", yearlist[i], sep="_"),
+                                         paste("aug", yearlist[i], sep="_"),
+                                         paste("sep", yearlist[i], sep="_"),
+                                         paste("oct", yearlist[i], sep="_"),
+                                         paste("nov", yearlist[i], sep="_"),
+                                         paste("dec", yearlist[i], sep="_")))
+                                         
+                                         
+
+df <- filter(df, rowSums(df[,6:17]) != 0)
+gc()
+
+df$dob <- ymd(df$dob)
+df <- filter(df, !is.na(dob))
+df <- melt.data.table(df, id.vars=c("tag","herd", "dob", "sex", "breed"))
+df <- filter(df, value==1)
+
+gc()
+
+df$date <- paste(paste("20", yearlist[i], sep=""),substr(df$variable, 1, 3), "1", sep="-")
+gc()
+df$variable <- NULL
+df$value <- NULL 
+
+gc()
+
+df$date <- ymd(df$date)
+
+df$age = as.numeric(df$date - df$dob)
+
+gc()
+
+df$br2 <- substr(df$breed, 1, 2)
+
+gc() 
+
+df$dob <- NULL
+
+gc() 
+
+df$breedtype <- recode(df$br2, 'AY'="DAIRY", 'BS'="DAIRY", 'FR'="DAIRY", 
+                         'JE'="DAIRY", 'NR'="DAIRY", 'GU'="DAIRY", 'LV'="BEEF", 'SR'="DAIRY", 
+                         'AA'="BEEF-BI", 'AU'="BEEF", 'BA'="BEEF", 'BB'="BEEF", 'BY'="BEEF-BI", 'CH'="BEEF", 
+                         'DX'="BEEF-BI", 'GA'="BEEF-BI", 'HE'="BEEF-BI", 'HI'="BEEF-BI", 'IM'="BEEF-BI", 
+                         'KE'="BEEF-BI", 'LM'="BEEF", 'MH'="BEEF", 'MO'="DAIRY", 'MY'="DAIRY", 'PI'="BEEF", 
+                         'PT'="BEEF", 'RB'="DAIRY", 'RM'="BEEF", 'SA'="BEEF", 'SH'="BEEF-BI", 'SI'="BEEF", 
+                         'BT'="BEEF", 'LU'="BEEF", 'MA'="BEEF", 'RP'="BEEF", 'SP'="BEEF", 'ST'="BEEF", 'WA'="BEEF", 
+                         'WP'="BEEF",
+                         'BG'="BEEF-BI", 'BW' = "BEEF", 'LH' = "BEEF", 'SL' = "BEEF-BI", 'NO' = "DAIRY", 'LR' = "BEEF",
+                         'RD' = "DAIRY", 'AK' = "BEEF", 'AN'="DAIRY", 'BF' = "BEEF", 'BL' = "DAIRY",
+                         'BZ' = "BEEF", 'CL' = "BEEF", 'DE' = "BEEF-BI", 'DN' = "BEEF-BI", 'FE' = "DAIRY",
+                         'GB' = "DAIRY", 'GS' = "BEEF-BI", 'GY' = "BEEF", 'MS' = "DAIRY", 'PZ' = "BEEF",
+                         'SG' = "BEEF", 'VO' = "BEEF", 'WW' = "BEEF",
+                         'AL' = "BEEF", 'AM' = "DAIRY", 'BE' = "BEEF", 'BI' = "BEEF", 'BP' = "DAIRY", 'BR' = "BEEF",
+                         'CB' = "BEEF", 'CI' = "BEEF", 'EF' = "BEEF", 'EP' = "BEEF-BI", 'GL' = "BEEF-BI", 
+                         'LJ' = "DAIRY", 'MK' = "DAIRY", 'OE' = "BEEF-BI", 'PS' = "BEEF", 'RE' = "DAIRY",
+                         'SD' = "BEEF-BI", 'SU' = "BEEF-BI", 'TY' = "BEEF-BI", 'VA' = "BEEF", 'VB' = "BEEF", 
+                         'WB' = "BEEF-BI", 'WG' = "BEEF-BI", 'YK' = "BEEF", 'ZE' = "BEEF", 'TT'="BEEF", 'GV'="BEEF", 'GC'="BEEF", 'IN'="BEEF")
+
+
+df <- filter(df, breedtype != "")
+df <- df %>% filter(breedtype != "BM")
+df <- df %>% filter(breedtype != "FL")
+df <- df %>% filter(breedtype != "FH")
+df <- df %>% filter(breedtype != "HR")
+df <- df %>% filter(breedtype != "SM")
+df <- df %>% filter(breedtype != "ID")
+df <- df %>% filter(breedtype != "IP")
+df <- df %>% filter(breedtype != "TB")
+df <- df %>% filter(breedtype != "WN")
+df <- df %>% filter(breedtype != "WS")
+
+df$age[df$age > 120*30] <- 120*30
+#df$age[df$Age_months > 60 & df$sex=="M" & df$breedtype =="DAIRY"] <- 60
+
+df$month = as.factor(month(df$date))
+df$year = as.factor(year(df$date))
+
+df$LIVE_WEIGHT=1
+X <- model.matrix(lmodF, data=df)
+
+gc()
+
+df <- cbind(df, X[,setdiff(colnames(X), names(df))])
+
+df$p1M <- predict(segm_kg_M, newdata = df)
+gc()
+df$p1F <- predict(segm_kg_F, newdata = df)
+gc()
+df$pred = ifelse(df$sex == "F", df$p1F, df$p1M)
+gc()
+df$ELIGIBLE_VALUE = 1
+X <- model.matrix(lmodFe, data=df)
+gc()
+df <- cbind(df, X[,setdiff(colnames(X), names(df))])
+
+df$p1Me <- predict(segm_eu_M, newdata = df)
+g()
+df$p1Fe <- predict(segm_eu_F, newdata = df)
+gc()
+df$value <- ifelse(df$sex == "F", df$p1Fe, df$p1Me)
+
+
+df <- df %>% dplyr::select(tag, herd, month, year, pred, value) %>%
+  rename(mass=pred)
+gc()
+##collapse to month
+month <- df %>% group_by(month) %>% summarise(biomass = sum(mass), value=sum(value),
+                                              n=n()) %>%
+  mutate(year=as.numeric(paste("20", yearlist[i], sep="")))
+
+#collapse to year
+herd <- df %>% group_by(herd, month) %>% summarise(herd_biomass = sum(mass), 
+                                                   n=n()) %>%
+  mutate(year=as.numeric(paste("20", yearlist[i], sep=""))) %>% ungroup()
+
+
+write.csv(month, paste("ani_level_agg_by_month", paste("20", yearlist[i], sep=""), ".csv", sep=""))
+write.csv(herd, paste("agg_by_herd", paste("20", yearlist[i], sep=""), ".csv", sep=""))
+
+}
+
+gc()

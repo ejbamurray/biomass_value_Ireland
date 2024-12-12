@@ -1,0 +1,892 @@
+#Set up####
+library(data.table)
+library(dplyr)
+library(lubridate)
+library(reshape2)
+library(ggplot2)
+library("ggsci")
+library(readxl)
+library(sqldf)
+library(scales)
+library(ggrepel)
+library(ggpubr)
+library(tidyverse)
+
+setwd("C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Data/Edited/AIM")
+
+
+#Add Herd Types####
+df21 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2021")
+df21$herd <-gsub('"',"",df21$herd)
+df21$month <-gsub('"',"",df21$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2021", "class_sub_2021"))
+herddf <- rename(herddf, herd_subclass=class_sub_2021)
+herddf <- rename(herddf, herd_class=class_2021)
+df21 <- left_join(df21, herddf)
+
+gc()
+
+df20 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2020")
+df20$herd <-gsub('"',"",df20$herd)
+df20$month <-gsub('"',"",df20$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2020", "class_sub_2020"))
+herddf <- rename(herddf, herd_subclass=class_sub_2020)
+herddf <- rename(herddf, herd_class=class_2020)
+df20 <- left_join(df20, herddf)
+
+gc()
+
+df19 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2019")
+df19$herd <-gsub('"',"",df19$herd)
+df19$month <-gsub('"',"",df19$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2019", "class_sub_2019"))
+herddf <- rename(herddf, herd_subclass=class_sub_2019)
+herddf <- rename(herddf, herd_class=class_2019)
+df19 <- left_join(df19, herddf)
+
+gc()
+
+df18 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2018")
+df18$herd <-gsub('"',"",df18$herd)
+df18$month <-gsub('"',"",df18$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2018", "class_sub_2018"))
+herddf <- rename(herddf, herd_subclass=class_sub_2018)
+herddf <- rename(herddf, herd_class=class_2018)
+df18 <- left_join(df18, herddf)
+
+gc()
+
+df17 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2017")
+df17$herd <-gsub('"',"",df17$herd)
+df17$month <-gsub('"',"",df17$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2017", "class_sub_2017"))
+herddf <- rename(herddf, herd_subclass=class_sub_2017)
+herddf <- rename(herddf, herd_class=class_2017)
+df17 <- left_join(df17, herddf)
+
+gc()
+
+df16 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2016")
+df16$herd <-gsub('"',"",df16$herd)
+df16$month <-gsub('"',"",df16$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2016", "class_sub_2016"))
+herddf <- rename(herddf, herd_subclass=class_sub_2016)
+herddf <- rename(herddf, herd_class=class_2016)
+df16 <- left_join(df16, herddf)
+
+gc()
+
+df15 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2015")
+df15$herd <-gsub('"',"",df15$herd)
+df15$month <-gsub('"',"",df15$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2015", "class_sub_2015"))
+herddf <- rename(herddf, herd_subclass=class_sub_2015)
+herddf <- rename(herddf, herd_class=class_2015)
+df15 <- left_join(df15, herddf)
+
+gc()
+
+df14 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2014")
+df14$herd <-gsub('"',"",df14$herd)
+df14$month <-gsub('"',"",df14$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2014", "class_sub_2014"))
+herddf <- rename(herddf, herd_subclass=class_sub_2014)
+herddf <- rename(herddf, herd_class=class_2014)
+df14 <- left_join(df14, herddf)
+
+gc()
+
+df13 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2013")
+df13$herd <-gsub('"',"",df13$herd)
+df13$month <-gsub('"',"",df13$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2013", "class_sub_2013"))
+herddf <- rename(herddf, herd_subclass=class_sub_2013)
+herddf <- rename(herddf, herd_class=class_2013)
+df13 <- left_join(df13, herddf)
+
+gc()
+
+df12 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2012")
+df12$herd <-gsub('"',"",df12$herd)
+df12$month <-gsub('"',"",df12$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2012", "class_sub_2012"))
+herddf <- rename(herddf, herd_subclass=class_sub_2012)
+herddf <- rename(herddf, herd_class=class_2012)
+df12 <- left_join(df12, herddf)
+
+gc()
+
+df11 <- read.csv.sql("ani_by_herd.csv", sql="select * from file where year = 2011")
+df11$herd <-gsub('"',"",df11$herd)
+df11$month <-gsub('"',"",df11$month)
+gc()
+
+herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+                select=c("herd", "class_2011", "class_sub_2011"))
+herddf <- rename(herddf, herd_subclass=class_sub_2011)
+herddf <- rename(herddf, herd_class=class_2011)
+df11 <- left_join(df11, herddf)
+
+gc()
+
+
+#By Year Animal/Herd Numbers and Sizes - Tables S7 and S8####
+#herd numbers#
+f2 <- ani_by_herd %>% group_by(herd, year, herd_class, herd_subclass) %>% summarise(n=n())
+f3 <- table(f2$year, f2$herd_class, f2$herd_subclass)
+f3 <- data.frame(f3)
+f3 <- f3 %>% filter(Freq!=0)
+f3 <- rename(f3, year=Var1)
+f3 <- rename(f3, herd_class=Var2)
+f3 <- rename(f3, herd_subclass=Var3)
+f3 <- rename(f3, herd_numbers=Freq)
+gc()
+
+#herd sizes median range#
+f5 <- ani_by_herd %>% group_by(year, herd_class, herd_subclass) %>% summarise(mean=round(mean(n),1), median=round(median(n),1), min=round(min(n),1), max=round(max(n),1))
+
+gc()
+
+#All Year Animal/Herd Numbers####
+years <- bind_rows(df21, df20, df19, df18, df17, df16, df15, df14, df13, df12, df11)#all years combined
+years$year <- as.factor(years$year)
+
+#herd#
+g <- years %>% group_by(herd) %>% summarise(n=n()) #number of obs = number of herds#
+
+#number of herds = 129939
+
+#animals
+
+ani_withinyear <- read.csv("ani_level_agg_by_month.csv")
+
+ani_withinyear$n <- as.numeric(ani_withinyear$n)
+
+round(by(ani_withinyear$n, ani_withinyear$year, mean))
+
+round(by(ani_withinyear$n, ani_withinyear$month, mean))
+
+
+
+#Biomass and Value Tables####
+##Sector - Tables S1 and S2####
+a21 <- years %>% group_by(year, herd, herd_subclass) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+total <- a21 %>% group_by(year, herd_subclass) %>% summarise(Totalbio=round(sum(Averagebio),1), Totalval=round(sum(Averageval),1)) 
+
+total$herd_class <- total$herd_subclass
+total$herd_class[total$herd_class =="BP"|total$herd_class =="BSB"|total$herd_class =="BSW"| total$herd_class =="BSY"| total$herd_class =="BSY_nR"] <- "Beef"
+total$herd_class[total$herd_class =="D"|total$herd_class =="DnR_C"|total$herd_class =="DnR_nC"| total$herd_class =="DRm"] <- "Dairy"
+total$herd_class[total$herd_class =="F"] <- "Fattening"
+total$herd_class[total$herd_class =="M"] <- "Mixed"
+total$herd_class[total$herd_class =="Rdf"|total$herd_class =="Sbf"|total$herd_class =="Sbm"| total$herd_class =="Sbmx"| total$herd_class =="Sdm"] <- "Store/Rearing"
+total$herd_class[total$herd_class =="T"] <- "Trading"
+total$herd_class[total$herd_class =="U"] <- "Unclassified"
+
+total$Totalbio <- total$Totalbio/1000000 #tonnes
+total$Totalbio <- round(total$Totalbio, digits=1)
+
+total$Totalval <- total$Totalval/1000000 #million
+total$Totalval <- round(total$Totalval, digits=1)
+
+#adjusted for inflation
+total <- total %>% mutate(adjval1 = if_else(year=="2011", ((Totalval/99.4)*100), 0),
+                          adjval2 = if_else(year=="2012", ((Totalval/101.1)*100), 0),
+                          adjval3 = if_else(year=="2013", ((Totalval/101.6)*100), 0),
+                          adjval4 = if_else(year=="2014", ((Totalval/101.8)*100), 0),
+                          adjval5 = if_else(year=="2015", ((Totalval/101.5)*100), 0),
+                          adjval6 = if_else(year=="2016", ((Totalval/101.5)*100), 0),
+                          adjval7 = if_else(year=="2017", ((Totalval/101.9)*100), 0),
+                          adjval8 = if_else(year=="2018", ((Totalval/102.4)*100), 0),
+                          adjval9 = if_else(year=="2019", ((Totalval/103.3)*100), 0),
+                          adjval10 = if_else(year=="2020", ((Totalval/103)*100), 0),
+                          adjval11 = if_else(year=="2021", ((Totalval/105.4)*100), 0))
+
+total$adjval <- total$adjval1+total$adjval2+total$adjval3+total$adjval4+total$adjval5+
+  total$adjval6+total$adjval7+total$adjval8+total$adjval9+total$adjval10+total$adjval11
+total$adjval1 <- NULL
+total$adjval2 <- NULL
+total$adjval3 <- NULL
+total$adjval4 <- NULL
+total$adjval5 <- NULL
+total$adjval6 <- NULL
+total$adjval7 <- NULL
+total$adjval8 <- NULL
+total$adjval9 <- NULL
+total$adjval10 <- NULL
+total$adjval11 <- NULL
+
+##Average - Tables S3 and S4####
+year2 <- years %>% group_by(year, herd_subclass) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+year2$herd_class <- year2$herd_subclass
+year2$herd_class[year2$herd_class =="BP"|year2$herd_class =="BSB"|year2$herd_class =="BSW"| year2$herd_class =="BSY"| year2$herd_class =="BSY_nR"] <- "Beef"
+year2$herd_class[year2$herd_class =="D"|year2$herd_class =="DnR_C"|year2$herd_class =="DnR_nC"| year2$herd_class =="DRm"] <- "Dairy"
+year2$herd_class[year2$herd_class =="F"] <- "Fattening"
+year2$herd_class[year2$herd_class =="M"] <- "Mixed"
+year2$herd_class[year2$herd_class =="Rdf"|year2$herd_class =="Sbf"|year2$herd_class =="Sbm"| year2$herd_class =="Sbmx"| year2$herd_class =="Sdm"] <- "Store/Rearing"
+year2$herd_class[year2$herd_class =="T"] <- "Trading"
+year2$herd_class[year2$herd_class =="U"] <- "Unclassified"
+
+year2$Averagebio <- year2$Averagebio/1000 # '000 kgs
+year2$Averagebio <- round(year2$Averagebio, digits=1)
+
+year2$Averageval <- year2$Averageval/1000 # € '000
+year2$Averageval <- round(year2$Averageval, digits=1)
+
+#adjusted for inflation
+year2 <- year2 %>% mutate(adjval1 = if_else(year=="2011", ((Averageval/99.4)*100), 0),
+                          adjval2 = if_else(year=="2012", ((Averageval/101.1)*100), 0),
+                          adjval3 = if_else(year=="2013", ((Averageval/101.6)*100), 0),
+                          adjval4 = if_else(year=="2014", ((Averageval/101.8)*100), 0),
+                          adjval5 = if_else(year=="2015", ((Averageval/101.5)*100), 0),
+                          adjval6 = if_else(year=="2016", ((Averageval/101.5)*100), 0),
+                          adjval7 = if_else(year=="2017", ((Averageval/101.9)*100), 0),
+                          adjval8 = if_else(year=="2018", ((Averageval/102.4)*100), 0),
+                          adjval9 = if_else(year=="2019", ((Averageval/103.3)*100), 0),
+                          adjval10 = if_else(year=="2020", ((Averageval/103)*100), 0),
+                          adjval11 = if_else(year=="2021", ((Averageval/105.4)*100), 0))
+
+year2$adjval <- year2$adjval1+year2$adjval2+year2$adjval3+year2$adjval4+year2$adjval5+
+  year2$adjval6+year2$adjval7+year2$adjval8+year2$adjval9+year2$adjval10+year2$adjval11
+year2$adjval1 <- NULL
+year2$adjval2 <- NULL
+year2$adjval3 <- NULL
+year2$adjval4 <- NULL
+year2$adjval5 <- NULL
+year2$adjval6 <- NULL
+year2$adjval7 <- NULL
+year2$adjval8 <- NULL
+year2$adjval9 <- NULL
+year2$adjval10 <- NULL
+year2$adjval11 <- NULL
+
+#Sector Biomass and Value Figures####
+
+##Sector Biomass and Value 2011 vs 2021 - Figure 2####
+total2 <- total %>% filter(year=="2011" | year=="2021")
+p3 <- ggplot(aes(x=herd_class, y=Totalbio, fill=herd_subclass), data=total2) + geom_col() + labs(x="Herd Types", y="Sector Herd Biomass ('000 Tonnes)")+
+  scale_fill_manual(name="Herd Subtypes", 
+                    labels = c("Beef Pedigree", 
+                               "Beef Suckling to Beef", 
+                               "Beef Suckling to Weanling", 
+                               "Beef Suckling to Youngstock",
+                               "Beef Suckling to Youngstock Non-rearing",
+                               "Standard Dairy",
+                               "Non-rearing Dairy Contract Rearing",
+                               "Non-rearing Dairy No Contract Rearing",
+                               "Dairy Rearing Male Calves",
+                               "Fattening",
+                               "Mixed Production",
+                               "Rearing Dairy Females",
+                               "Store Beef Females",
+                               "Store Beef Males",
+                               "Store Beef Mixed",
+                               "Store Dairy Males",
+                               "Trader",
+                               "Unclassified"),
+                    values = c("BP"="#FF3333", 
+                               "BSB"="hotpink4", 
+                               "BSW"="#FF66CC", 
+                               "BSY"="#990033",
+                               "BSY_nR"="tomato3",
+                               "D"="#3333FF",
+                               "DnR_C"="#00CCFF",
+                               "DnR_nC"="#3399CC",
+                               "DRm"="#000099",
+                               "F"="#006600",
+                               "M"="#33FF00",
+                               "Rdf"="#FF9933",
+                               "Sbf"="#FFFF00",
+                               "Sbm"="#FF6600",
+                               "Sbmx"="#FFCC33",
+                               "Sdm"="#CCCC00",
+                               "T"="#9900FF",
+                               "U"="#000033"))+
+  facet_wrap(~ year, ncol=2, scales="fixed")+ theme(legend.position= "none")+ guides(colour = guide_legend(title.position = "top"))+
+  theme(strip.text.x = element_text(size=18, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white"))+  theme(legend.title = element_text(size=18, color = "black"), 
+                                                                                                                                                        legend.text = element_text(size=16)) + theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
+                                                                                                                                                                                                                                                                                                                                                             panel.grid.major = element_blank(),
+                                                                                                                                                                                                                                                                                                                                                             panel.grid.minor = element_blank(),
+                                                                                                                                                                                                                                                                                                                                                             panel.border = element_blank(),
+                                                                                                                                                                                                                                                                                                                                                             axis.line.x = element_line(colour = "black"), 
+                                                                                                                                                                                                                                                                                                                                                             axis.line.y = element_line(colour = "black"),
+                                                                                                                                                                                                                                                                                                                                                             axis.text = element_text(colour = "black"))
+
+#Total Stock Value##
+
+p4 <- ggplot(aes(x=herd_class, y=adjval, fill=herd_subclass), data=total2) + geom_col() + labs(x="Herd Types", y="Sector Herd Stock Value (€ Million)")+
+  scale_fill_manual(name="Herd Subtypes", 
+                    labels = c("Beef Pedigree", 
+                               "Beef Suckling to Beef", 
+                               "Beef Suckling to Weanling", 
+                               "Beef Suckling to Youngstock",
+                               "Beef Suckling to Youngstock Non-rearing",
+                               "Standard Dairy",
+                               "Non-rearing Dairy Contract Rearing",
+                               "Non-rearing Dairy No Contract Rearing",
+                               "Dairy Rearing Male Calves",
+                               "Fattening",
+                               "Mixed Production",
+                               "Rearing Dairy Females",
+                               "Store Beef Females",
+                               "Store Beef Males",
+                               "Store Beef Mixed",
+                               "Store Dairy Males",
+                               "Trader",
+                               "Unclassified"),
+                    values = c("BP"="#FF3333", 
+                               "BSB"="hotpink4", 
+                               "BSW"="#FF66CC", 
+                               "BSY"="#990033",
+                               "BSY_nR"="tomato3",
+                               "D"="#3333FF",
+                               "DnR_C"="#00CCFF",
+                               "DnR_nC"="#3399CC",
+                               "DRm"="#000099",
+                               "F"="#006600",
+                               "M"="#33FF00",
+                               "Rdf"="#FF9933",
+                               "Sbf"="#FFFF00",
+                               "Sbm"="#FF6600",
+                               "Sbmx"="#FFCC33",
+                               "Sdm"="#CCCC00",
+                               "T"="#9900FF",
+                               "U"="#000033"))+
+  facet_wrap(~ year, ncol=2, scales="fixed")+ theme(legend.position= "bottom", legend.direction = "horizontal")+ guides(colour = guide_legend(title.position = "top"))+
+  theme(strip.text.x = element_text(size=18, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white"))+  theme(legend.title = element_text(size=18, color = "black"), 
+                                                                                                                                                        legend.text = element_text(size=16)) + theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
+                                                                                                                                                                                                                                                                                                                                                             panel.grid.major = element_blank(),
+                                                                                                                                                                                                                                                                                                                                                             panel.grid.minor = element_blank(),
+                                                                                                                                                                                                                                                                                                                                                             panel.border = element_blank(),
+                                                                                                                                                                                                                                                                                                                                                             axis.line.x = element_line(colour = "black"), 
+                                                                                                                                                                                                                                                                                                                                                             axis.line.y = element_line(colour = "black"),
+                                                                                                                                                                                                                                                                                                                                                             axis.text = element_text(colour = "black"))
+
+p3
+p4
+#Plotting Grid###
+ggarrange(p3, p4,
+          labels = c("A", "B"),
+          ncol=1, nrow=2)
+
+
+#Within Year####
+
+
+withinyear <- years %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+gc()
+withinyear$Averagebio <- withinyear$Averagebio/1000 # '000 kgs
+withinyear$Averagebio <- round(withinyear$Averagebio, digits=1)
+withinyear$Averageval <- withinyear$Averageval/1000 # € '000 not adjusted for inflation
+withinyear$Averageval <- round(withinyear$Averageval, digits=1)
+
+withinyear$herd_class[withinyear$herd_class =="B"] <- "Beef"
+withinyear$herd_class[withinyear$herd_class =="D"] <- "Dairy"
+withinyear$herd_class[withinyear$herd_class =="F"] <- "Fattening"
+withinyear$herd_class[withinyear$herd_class =="M"] <- "Mixed"
+withinyear$herd_class[withinyear$herd_class =="S"] <- "Store/Rearing"
+withinyear$herd_class[withinyear$herd_class =="T"] <- "Trading"
+withinyear$herd_class[withinyear$herd_class =="U"] <- "Unclassified"
+
+#adjusted for inflation
+month11 <- df11 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month11 <- month11 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/97.4)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/98.3)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/99.2)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/99.5)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/99.6)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/99.5)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/99.5)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/99.7)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/100)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/100.3)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/100.3)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/100)*100), 0))
+
+month11$adjval <- month11$adjval1+month11$adjval2+month11$adjval3+month11$adjval4+month11$adjval5+
+  month11$adjval6+month11$adjval7+month11$adjval8+month11$adjval9+month11$adjval10+month11$adjval11+month11$adjval12
+month11$adjval1 <- NULL
+month11$adjval2 <- NULL
+month11$adjval3 <- NULL
+month11$adjval4 <- NULL
+month11$adjval5 <- NULL
+month11$adjval6 <- NULL
+month11$adjval7 <- NULL
+month11$adjval8 <- NULL
+month11$adjval9 <- NULL
+month11$adjval10 <- NULL
+month11$adjval11 <- NULL
+month11$adjval12 <- NULL
+
+month12 <- df12 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month12 <- month12 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/99.5)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/100.4)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/101.4)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/101.4)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/101.4)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/101.2)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/101.1)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/101.7)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/101.6)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/101.5)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/101.1)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/101.2)*100), 0))
+
+month12$adjval <- month12$adjval1+month12$adjval2+month12$adjval3+month12$adjval4+month12$adjval5+
+  month12$adjval6+month12$adjval7+month12$adjval8+month12$adjval9+month12$adjval10+month12$adjval11+month12$adjval12
+month12$adjval1 <- NULL
+month12$adjval2 <- NULL
+month12$adjval3 <- NULL
+month12$adjval4 <- NULL
+month12$adjval5 <- NULL
+month12$adjval6 <- NULL
+month12$adjval7 <- NULL
+month12$adjval8 <- NULL
+month12$adjval9 <- NULL
+month12$adjval10 <- NULL
+month12$adjval11 <- NULL
+month12$adjval12 <- NULL
+
+month13 <- df13 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month13 <- month13 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/100.7)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/101.5)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/101.9)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/101.9)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/101.8)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/101.9)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/101.8)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/101.9)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/101.8)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/101.6)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/101.4)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/101.4)*100), 0))
+
+month13$adjval <- month13$adjval1+month13$adjval2+month13$adjval3+month13$adjval4+month13$adjval5+
+  month13$adjval6+month13$adjval7+month13$adjval8+month13$adjval9+month13$adjval10+month13$adjval11+month13$adjval12
+month13$adjval1 <- NULL
+month13$adjval2 <- NULL
+month13$adjval3 <- NULL
+month13$adjval4 <- NULL
+month13$adjval5 <- NULL
+month13$adjval6 <- NULL
+month13$adjval7 <- NULL
+month13$adjval8 <- NULL
+month13$adjval9 <- NULL
+month13$adjval10 <- NULL
+month13$adjval11 <- NULL
+month13$adjval12 <- NULL
+
+month14 <- df14 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month14 <- month14 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/100.9)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/101.4)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/102.1)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/102.2)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/102.2)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/102.3)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/102.1)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/102.3)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/102.1)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/101.8)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/101.5)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/101.1)*100), 0))
+
+month14$adjval <- month14$adjval1+month14$adjval2+month14$adjval3+month14$adjval4+month14$adjval5+
+  month14$adjval6+month14$adjval7+month14$adjval8+month14$adjval9+month14$adjval10+month14$adjval11+month14$adjval12
+month14$adjval1 <- NULL
+month14$adjval2 <- NULL
+month14$adjval3 <- NULL
+month14$adjval4 <- NULL
+month14$adjval5 <- NULL
+month14$adjval6 <- NULL
+month14$adjval7 <- NULL
+month14$adjval8 <- NULL
+month14$adjval9 <- NULL
+month14$adjval10 <- NULL
+month14$adjval11 <- NULL
+month14$adjval12 <- NULL
+
+month15 <- df15 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month15 <- month15 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/100.3)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/100.9)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/101.5)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/101.5)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/101.9)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/102.2)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/101.9)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/102.3)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/101.8)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/101.6)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/101.3)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/101.2)*100), 0))
+
+month15$adjval <- month15$adjval1+month15$adjval2+month15$adjval3+month15$adjval4+month15$adjval5+
+  month15$adjval6+month15$adjval7+month15$adjval8+month15$adjval9+month15$adjval10+month15$adjval11+month15$adjval12
+month15$adjval1 <- NULL
+month15$adjval2 <- NULL
+month15$adjval3 <- NULL
+month15$adjval4 <- NULL
+month15$adjval5 <- NULL
+month15$adjval6 <- NULL
+month15$adjval7 <- NULL
+month15$adjval8 <- NULL
+month15$adjval9 <- NULL
+month15$adjval10 <- NULL
+month15$adjval11 <- NULL
+month15$adjval12 <- NULL
+
+month16 <- df16 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month16 <- month16 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/100.4)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/100.8)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/101.2)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/101.4)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/101.9)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/102.6)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/102.4)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/102.2)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/101.8)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/101.3)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/101.2)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/101.2)*100), 0))
+
+month16$adjval <- month16$adjval1+month16$adjval2+month16$adjval3+month16$adjval4+month16$adjval5+
+  month16$adjval6+month16$adjval7+month16$adjval8+month16$adjval9+month16$adjval10+month16$adjval11+month16$adjval12
+month16$adjval1 <- NULL
+month16$adjval2 <- NULL
+month16$adjval3 <- NULL
+month16$adjval4 <- NULL
+month16$adjval5 <- NULL
+month16$adjval6 <- NULL
+month16$adjval7 <- NULL
+month16$adjval8 <- NULL
+month16$adjval9 <- NULL
+month16$adjval10 <- NULL
+month16$adjval11 <- NULL
+month16$adjval12 <- NULL
+
+month17 <- df17 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month17 <- month17 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/100.7)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/101.3)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/101.9)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/102.3)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/102.1)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/102.2)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/102.2)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/102.7)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/102)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/101.9)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/101.7)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/101.6)*100), 0))
+
+month17$adjval <- month17$adjval1+month17$adjval2+month17$adjval3+month17$adjval4+month17$adjval5+
+  month17$adjval6+month17$adjval7+month17$adjval8+month17$adjval9+month17$adjval10+month17$adjval11+month17$adjval12
+month17$adjval1 <- NULL
+month17$adjval2 <- NULL
+month17$adjval3 <- NULL
+month17$adjval4 <- NULL
+month17$adjval5 <- NULL
+month17$adjval6 <- NULL
+month17$adjval7 <- NULL
+month17$adjval8 <- NULL
+month17$adjval9 <- NULL
+month17$adjval10 <- NULL
+month17$adjval11 <- NULL
+month17$adjval12 <- NULL
+
+month18 <- df18 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month18 <- month18 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/100.9)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/101.8)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/102.1)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/101.9)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/102.5)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/102.6)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/103)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/103.3)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/102.9)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/102.8)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/102.4)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/102.3)*100), 0))
+
+month18$adjval <- month18$adjval1+month18$adjval2+month18$adjval3+month18$adjval4+month18$adjval5+
+  month18$adjval6+month18$adjval7+month18$adjval8+month18$adjval9+month18$adjval10+month18$adjval11+month18$adjval12
+month18$adjval1 <- NULL
+month18$adjval2 <- NULL
+month18$adjval3 <- NULL
+month18$adjval4 <- NULL
+month18$adjval5 <- NULL
+month18$adjval6 <- NULL
+month18$adjval7 <- NULL
+month18$adjval8 <- NULL
+month18$adjval9 <- NULL
+month18$adjval10 <- NULL
+month18$adjval11 <- NULL
+month18$adjval12 <- NULL
+
+month19 <- df19 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month19 <- month19 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/101.6)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/102.4)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/103.2)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/103.6)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/103.5)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/103.7)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/103.5)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/104)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/103.8)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/103.6)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/103.4)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/103.6)*100), 0))
+
+month19$adjval <- month19$adjval1+month19$adjval2+month19$adjval3+month19$adjval4+month19$adjval5+
+  month19$adjval6+month19$adjval7+month19$adjval8+month19$adjval9+month19$adjval10+month19$adjval11+month19$adjval12
+month19$adjval1 <- NULL
+month19$adjval2 <- NULL
+month19$adjval3 <- NULL
+month19$adjval4 <- NULL
+month19$adjval5 <- NULL
+month19$adjval6 <- NULL
+month19$adjval7 <- NULL
+month19$adjval8 <- NULL
+month19$adjval9 <- NULL
+month19$adjval10 <- NULL
+month19$adjval11 <- NULL
+month19$adjval12 <- NULL
+
+month20 <- df20 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month20 <- month20 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/102.9)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/103.6)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/104)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/103.6)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/103)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/103.4)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/103.1)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/103)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/102.6)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/102)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/102.3)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/102.6)*100), 0))
+
+month20$adjval <- month20$adjval1+month20$adjval2+month20$adjval3+month20$adjval4+month20$adjval5+
+  month20$adjval6+month20$adjval7+month20$adjval8+month20$adjval9+month20$adjval10+month20$adjval11+month20$adjval12
+month20$adjval1 <- NULL
+month20$adjval2 <- NULL
+month20$adjval3 <- NULL
+month20$adjval4 <- NULL
+month20$adjval5 <- NULL
+month20$adjval6 <- NULL
+month20$adjval7 <- NULL
+month20$adjval8 <- NULL
+month20$adjval9 <- NULL
+month20$adjval10 <- NULL
+month20$adjval11 <- NULL
+month20$adjval12 <- NULL
+
+month21 <- df21 %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
+
+month21 <- month21 %>% mutate(adjval1 = if_else(month=="1", ((Averageval/102.8)*100), 0),
+                              adjval2 = if_else(month=="2", ((Averageval/103.1)*100), 0),
+                              adjval3 = if_else(month=="3", ((Averageval/103.9)*100), 0),
+                              adjval4 = if_else(month=="4", ((Averageval/104.6)*100), 0),
+                              adjval5 = if_else(month=="5", ((Averageval/104.8)*100), 0),
+                              adjval6 = if_else(month=="6", ((Averageval/104.9)*100), 0),
+                              adjval7 = if_else(month=="7", ((Averageval/105.3)*100), 0),
+                              adjval8 = if_else(month=="8", ((Averageval/106)*100), 0),
+                              adjval9 = if_else(month=="9", ((Averageval/106.4)*100), 0),
+                              adjval10 = if_else(month=="10", ((Averageval/107.2)*100), 0),
+                              adjval11 = if_else(month=="11", ((Averageval/107.8)*100), 0),
+                              adjval12 = if_else(month=="12", ((Averageval/108.3)*100), 0))
+
+month21$adjval <- month21$adjval1+month21$adjval2+month21$adjval3+month21$adjval4+month21$adjval5+
+  month21$adjval6+month21$adjval7+month21$adjval8+month21$adjval9+month21$adjval10+month21$adjval11+month21$adjval12
+month21$adjval1 <- NULL
+month21$adjval2 <- NULL
+month21$adjval3 <- NULL
+month21$adjval4 <- NULL
+month21$adjval5 <- NULL
+month21$adjval6 <- NULL
+month21$adjval7 <- NULL
+month21$adjval8 <- NULL
+month21$adjval9 <- NULL
+month21$adjval10 <- NULL
+month21$adjval11 <- NULL
+month21$adjval12 <- NULL
+
+years <- bind_rows(month21, month20, month19, month18, month17, month16, month15, month14, month13, month12, month11)
+
+withinyearadj <- years %>% group_by(herd_class, herd_subclass, month) %>% summarise(Averagebiototal=round(mean(Averagebio),1), adjvaltotal=round(mean(adjval),1)) 
+gc()
+withinyearadj$adjvaltotal <- withinyearadj$adjvaltotal/1000 # € '000
+withinyearadj$adjvaltotal <- round(withinyearadj$adjvaltotal, digits=1)
+withinyearadj$Averagebiototal <- withinyearadj$Averagebiototal/1000 # '000 kgs
+withinyearadj$Averagebiototal <- round(withinyearadj$Averagebiototal, digits=1)
+
+withinyearadj$herd_class[withinyearadj$herd_class =="B"] <- "Beef"
+withinyearadj$herd_class[withinyearadj$herd_class =="D"] <- "Dairy"
+withinyearadj$herd_class[withinyearadj$herd_class =="F"] <- "Fattening"
+withinyearadj$herd_class[withinyearadj$herd_class =="M"] <- "Mixed"
+withinyearadj$herd_class[withinyearadj$herd_class =="S"] <- "Store/Rearing"
+withinyearadj$herd_class[withinyearadj$herd_class =="T"] <- "Trading"
+withinyearadj$herd_class[withinyearadj$herd_class =="U"] <- "Unclassified"
+
+gc()
+
+##Average Biomass Graph - Figure S1####
+ggplot(aes(x=month, y=Averagebiototal, group=herd_subclass), data=withinyearadj) + 
+  geom_line(aes(color=herd_subclass), linewidth=1.5)+
+  facet_wrap(~ herd_class, ncol=2, scales="free")+
+  scale_x_discrete(expand = c(0, 0.5), labels =c('1' ="Jan", '2'="Feb", '3'="Mar", '4'="Apr", '5'="May", '6'="Jun", '7'="Jul", '8'="Aug", '9'="Sep", '10' ="Oct", '11' ="Nov", '12'= "Dec"), limits=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"))+
+  scale_y_continuous(expand = c(0, 0.5), limits = c(0, NA))+
+  labs(x="Months", y="Average Herd Biomass ('000 kg)")+
+  scale_color_manual(name="Herd Subclasses", 
+                     labels = c("BP", 
+                                "BSB", 
+                                "BSW", 
+                                "BSY",
+                                "BSY_nR",
+                                "D",
+                                "DnR_C",
+                                "DnR_nC",
+                                "DRm",
+                                "F",
+                                "M",
+                                "Rdf",
+                                "Sbf",
+                                "Sbm",
+                                "Sbmx",
+                                "Sdm",
+                                "T",
+                                "U"),
+                     values = c("BP"="#FF3333", 
+                                "BSB"="hotpink4", 
+                                "BSW"="#FF66CC", 
+                                "BSY"="#990033",
+                                "BSY_nR"="tomato3",
+                                "D"="#3333FF",
+                                "DnR_C"="#00CCFF",
+                                "DnR_nC"="#3399CC",
+                                "DRm"="#000099",
+                                "F"="#006600",
+                                "M"="#33FF00",
+                                "Rdf"="#FF9933",
+                                "Sbf"="#FFFF00",
+                                "Sbm"="#FF6600",
+                                "Sbmx"="#FFCC33",
+                                "Sdm"="#CCCC00",
+                                "T"="#9900FF",
+                                "U"="#000033"))+
+  theme(legend.position = "none")+
+  theme(strip.text.x = element_text(size=18, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white")) + 
+  theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
+                                                                                                                                                                panel.grid.major = element_blank(),
+                                                                                                                                                                panel.grid.minor = element_blank(),
+                                                                                                                                                                panel.border = element_blank(),
+                                                                                                                                                                axis.line.x = element_line(colour = "black"), 
+                                                                                                                                                                axis.line.y = element_line(colour = "black"),
+                                                                                                                                                                axis.text = element_text(colour = "black"))+
+  geom_label_repel(data = filter(withinyear, month == 12),
+                   aes(label = herd_subclass, color= herd_subclass),
+                   size=5,
+                   fontface="bold",
+                   label.size = NA,
+                   nudge_x = 1.2,
+                   na.rm = TRUE)
+
+##Average Value Graph - Figure S2####
+ggplot(aes(x=month, y=adjvaltotal, group=herd_subclass), data=withinyearadj) + 
+  geom_line(aes(color=herd_subclass), linewidth=1.5)+
+  facet_wrap(~ herd_class, ncol=2, scales="free")+
+  scale_x_discrete(expand = c(0, 0.5), labels =c('1' ="Jan", '2'="Feb", '3'="Mar", '4'="Apr", '5'="May", '6'="Jun", '7'="Jul", '8'="Aug", '9'="Sep", '10' ="Oct", '11' ="Nov", '12'= "Dec"), limits=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"))+
+  scale_y_continuous(expand = c(0, 0.5), limits = c(0, NA))+
+  labs(x="Months", y="Average Herd Stock Value (Adjusted €'000)")+
+  scale_color_manual(name="Herd Subclasses", 
+                     labels = c("BP", 
+                                "BSB", 
+                                "BSW", 
+                                "BSY",
+                                "BSY_nR",
+                                "D",
+                                "DnR_C",
+                                "DnR_nC",
+                                "DRm",
+                                "F",
+                                "M",
+                                "Rdf",
+                                "Sbf",
+                                "Sbm",
+                                "Sbmx",
+                                "Sdm",
+                                "T",
+                                "U"),
+                     values = c("BP"="#FF3333", 
+                                "BSB"="hotpink4", 
+                                "BSW"="#FF66CC", 
+                                "BSY"="#990033",
+                                "BSY_nR"="tomato3",
+                                "D"="#3333FF",
+                                "DnR_C"="#00CCFF",
+                                "DnR_nC"="#3399CC",
+                                "DRm"="#000099",
+                                "F"="#006600",
+                                "M"="#33FF00",
+                                "Rdf"="#FF9933",
+                                "Sbf"="#FFFF00",
+                                "Sbm"="#FF6600",
+                                "Sbmx"="#B85E09",
+                                "Sdm"="#CFA50A",
+                                "T"="#9900FF",
+                                "U"="#000033"))+
+  theme(legend.position = "none")+
+  theme(strip.text.x = element_text(size=20, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white")) + 
+  theme(axis.text = element_text(size = 18), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=20, color="black")) + theme(panel.background = element_blank(),
+                                                                                                                                                                panel.grid.major = element_blank(),
+                                                                                                                                                                panel.grid.minor = element_blank(),
+                                                                                                                                                                panel.border = element_blank(),
+                                                                                                                                                                axis.line.x = element_line(colour = "black"), 
+                                                                                                                                                                axis.line.y = element_line(colour = "black"),
+                                                                                                                                                                axis.text = element_text(colour = "black"))+
+  geom_label_repel(data = filter(withinyearadj, month == 12),
+                   aes(label = herd_subclass, color= herd_subclass),
+                   size=5,
+                   fontface="bold",
+                   label.size = NA,
+                   nudge_x = 1.2,
+                   na.rm = TRUE)
+
+gc()
