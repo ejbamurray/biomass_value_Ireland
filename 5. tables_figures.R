@@ -199,7 +199,7 @@ round(by(ani_withinyear$n, ani_withinyear$month, mean))
 
 
 #Biomass and Value Tables####
-##Sector - Tables S7 and S8####
+##Sector - Tables S9 and S10####
 a21 <- years %>% group_by(year, herd, herd_subclass) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
 total <- a21 %>% group_by(year, herd_subclass) %>% summarise(Totalbio=round(sum(Averagebio),1), Totalval=round(sum(Averageval),1)) 
 
@@ -245,7 +245,7 @@ total$adjval9 <- NULL
 total$adjval10 <- NULL
 total$adjval11 <- NULL
 
-##Average - Tables S9 and S10####
+##Average - Tables S11 and S12####
 year2 <- years %>% group_by(year, herd_subclass) %>% summarise(Averagebio=round(mean(herd_biomass),1), Averageval=round(mean(herd_value),1)) 
 year2$herd_class <- year2$herd_subclass
 year2$herd_class[year2$herd_class =="BP"|year2$herd_class =="BSB"|year2$herd_class =="BSW"| year2$herd_class =="BSY"| year2$herd_class =="BSY_nR"] <- "Beef"
@@ -292,8 +292,8 @@ year2$adjval11 <- NULL
 #Sector Biomass and Value Figures####
 
 ##Sector Biomass - Figure 4####
-ggplot(aes(x=year, y=Totalbio, fill=herd_subclass), data=total) + geom_col() + labs(x="Years", y="Sector Biomass ('000 Tonnes)")+
-  scale_fill_manual(name="Herd Subclasses",
+c <- ggplot(aes(x=year, y=Totalbio, fill=herd_subclass), data=total) + geom_col() + labs(x="Years", y="Sector Biomass (Thousand Tonnes)")+
+  scale_fill_manual(name="Herd Subtypes",
                     values = c("BP"="#FF3333", 
                                "BSB"="hotpink4", 
                                "BSW"="#FF66CC", 
@@ -311,8 +311,26 @@ ggplot(aes(x=year, y=Totalbio, fill=herd_subclass), data=total) + geom_col() + l
                                "Sbmx"="#FFCC33",
                                "Sdm"="#CCCC00",
                                "T"="#9900FF",
-                               "U"="#000033"))+
-  facet_wrap(~ herd_class, ncol=2, scales="free")+ theme(legend.position= c(.75,.1), legend.direction = "horizontal")+ guides(colour = guide_legend(title.position = "top"))+
+                               "U"="#000033"),
+                    labels = c("BP"="Beef pedigree ", 
+                               "BSB"="Beef suckling to beef ", 
+                               "BSW"="Beef suckling to weanling", 
+                               "BSY"="Beef suckling to youngstock",
+                               "BSY_nR"="Beef suckling to youngstock non-rearing",
+                               "D"="Standard dairy",
+                               "DnR_C"="Non-rearing dairy contract rearing",
+                               "DnR_nC"="Non-rearing dairy no contract rearing",
+                               "DRm"="Dairy rearing male calves",
+                               "F"="Fattening",
+                               "M"="Mixed production",
+                               "Rdf"="Rearing dairy females",
+                               "Sbf"="Store beef females",
+                               "Sbm"="Store beef males",
+                               "Sbmx"="Store beef mixed",
+                               "Sdm"="Store dairy males",
+                               "T"="Trading",
+                               "U"="Unclassified"))+
+  facet_wrap(~ herd_class, ncol=2, scales="free")+ theme(legend.position= "bottom", legend.direction = "horizontal")+ guides(colour = guide_legend(title.position = "top"))+
   theme(strip.text.x = element_text(size=18, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white"))+  theme(legend.title = element_text(size=18, color = "black"), 
                                                                                                                                                         legend.text = element_text(size=16)) + theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
                                                                                                                                                                                                                                                                                                                                                              panel.grid.major = element_blank(),
@@ -321,20 +339,15 @@ ggplot(aes(x=year, y=Totalbio, fill=herd_subclass), data=total) + geom_col() + l
                                                                                                                                                                                                                                                                                                                                                              axis.line.x = element_line(colour = "black"), 
                                                                                                                                                                                                                                                                                                                                                              axis.line.y = element_line(colour = "black"),
                                                                                                                                                                                                                                                                                                                                                              axis.text = element_text(colour = "black"))
-ggsave(
-  "Figure4.jpeg",
-  plot = last_plot(),
-  path = "C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Biomass Publication Drafts/Frontiers Veterinary (For Submission)/Figures",
-  width = 17.5,
-  height = 12,
-  units = "in",
-  dpi = 300)
+jpeg("Figure4.jpeg", res=300, width=17.5, height = 14.5, unit="in")
+c
+dev.off()
 
 ##Total Stock Value - Figure 5####
 total$adjval <- round(total$adjval, digits=1)
 
-ggplot(aes(x=year, y=adjval, fill=herd_subclass), data=total) + geom_col() + labs(x="Years", y="Sector Stock Value (€ Million)")+
-  scale_fill_manual(name="Herd Subclasses",
+s <- ggplot(aes(x=year, y=adjval, fill=herd_subclass), data=total) + geom_col() + labs(x="Years", y="Sector Stock Value (Million Euros, €)")+
+  scale_fill_manual(name="Herd Subtypes",
                     values = c("BP"="#FF3333", 
                                "BSB"="hotpink4", 
                                "BSW"="#FF66CC", 
@@ -352,8 +365,26 @@ ggplot(aes(x=year, y=adjval, fill=herd_subclass), data=total) + geom_col() + lab
                                "Sbmx"="#FFCC33",
                                "Sdm"="#CCCC00",
                                "T"="#9900FF",
-                               "U"="#000033"))+
-  facet_wrap(~ herd_class, ncol=2, scales="free")+ theme(legend.position= c(.75,.1), legend.direction = "horizontal")+ guides(colour = guide_legend(title.position = "top"))+
+                               "U"="#000033"),
+                    labels = c("BP"="Beef pedigree ", 
+                               "BSB"="Beef suckling to beef ", 
+                               "BSW"="Beef suckling to weanling", 
+                               "BSY"="Beef suckling to youngstock",
+                               "BSY_nR"="Beef suckling to youngstock non-rearing",
+                               "D"="Standard dairy",
+                               "DnR_C"="Non-rearing dairy contract rearing",
+                               "DnR_nC"="Non-rearing dairy no contract rearing",
+                               "DRm"="Dairy rearing male calves",
+                               "F"="Fattening",
+                               "M"="Mixed production",
+                               "Rdf"="Rearing dairy females",
+                               "Sbf"="Store beef females",
+                               "Sbm"="Store beef males",
+                               "Sbmx"="Store beef mixed",
+                               "Sdm"="Store dairy males",
+                               "T"="Trading",
+                               "U"="Unclassified"))+
+  facet_wrap(~ herd_class, ncol=2, scales="free")+ theme(legend.position= "bottom", legend.direction = "horizontal")+ guides(colour = guide_legend(title.position = "top"))+
   theme(strip.text.x = element_text(size=18, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white"))+  theme(legend.title = element_text(size=18, color = "black"), 
                                                                                                                                                         legend.text = element_text(size=16)) + theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
                                                                                                                                                                                                                                                                                                                                                              panel.grid.major = element_blank(),
@@ -362,42 +393,37 @@ ggplot(aes(x=year, y=adjval, fill=herd_subclass), data=total) + geom_col() + lab
                                                                                                                                                                                                                                                                                                                                                              axis.line.x = element_line(colour = "black"), 
                                                                                                                                                                                                                                                                                                                                                              axis.line.y = element_line(colour = "black"),
                                                                                                                                                                                                                                                                                                                                                              axis.text = element_text(colour = "black"))
-ggsave(
-  "Figure5.jpeg",
-  plot = last_plot(),
-  path = "C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Biomass Publication Drafts/Frontiers Veterinary (For Submission)/Figures",
-  width = 17.5,
-  height = 12,
-  units = "in",
-  dpi = 300)
+jpeg("Figure5.jpeg", res=300, width=17.5, height = 14.5, unit="in")
+s
+dev.off()
 
 #Average Biomass and Value Figures####
 ##Average biomass by Year - Figure 6####
-ggplot(aes(x=year, y=Averagebio, group=herd_subclass), data=year2) + 
+d <- ggplot(aes(x=year, y=Averagebio, group=herd_subclass), data=year2) + 
   geom_line(aes(color=herd_subclass), linewidth=1.5)+
   facet_wrap(~ herd_class, ncol=2, scales="free")+
   scale_x_discrete(expand = c(0, 0.5))+
   scale_y_continuous(expand = c(0, 0.5), limits = c(0, NA))+
-  labs(x="Years", y="Average Herd Biomass ('000 kg)")+
-  scale_color_manual(name="Herd Subclasses", 
-                     labels = c("BP", 
-                                "BSB", 
-                                "BSW", 
-                                "BSY",
-                                "BSY_nR",
-                                "D",
-                                "DnR_C",
-                                "DnR_nC",
-                                "DRm",
-                                "F",
-                                "M",
-                                "Rdf",
-                                "Sbf",
-                                "Sbm",
-                                "Sbmx",
-                                "Sdm",
-                                "T",
-                                "U"),
+  labs(x="Years", y="Average Herd Biomass (Thousand kg)")+
+  scale_color_manual(name="Herd Subypes", 
+                     labels = c("BP"="Beef pedigree ", 
+                                "BSB"="Beef suckling to beef ", 
+                                "BSW"="Beef suckling to weanling", 
+                                "BSY"="Beef suckling to youngstock",
+                                "BSY_nR"="Beef suckling to youngstock non-rearing",
+                                "D"="Standard dairy",
+                                "DnR_C"="Non-rearing dairy contract rearing",
+                                "DnR_nC"="Non-rearing dairy no contract rearing",
+                                "DRm"="Dairy rearing male calves",
+                                "F"="Fattening",
+                                "M"="Mixed production",
+                                "Rdf"="Rearing dairy females",
+                                "Sbf"="Store beef females",
+                                "Sbm"="Store beef males",
+                                "Sbmx"="Store beef mixed",
+                                "Sdm"="Store dairy males",
+                                "T"="Trading",
+                                "U"="Unclassified"),
                      values = c("BP"="#FF3333", 
                                 "BSB"="hotpink4", 
                                 "BSW"="#FF66CC", 
@@ -416,9 +442,10 @@ ggplot(aes(x=year, y=Averagebio, group=herd_subclass), data=year2) +
                                 "Sdm"="#CCCC00",
                                 "T"="#9900FF",
                                 "U"="#000033"))+
-  theme(legend.position = "none")+
+  theme(legend.position = "bottom", legend.direction = "horizontal")+
   theme(strip.text.x = element_text(size=18, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white")) + 
-  theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
+  theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"))+  theme(legend.title = element_text(size=18, color = "black"), 
+                                                                                                     legend.text = element_text(size=16)) + theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black"))+ theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
                                                                                                                                                                 panel.grid.major = element_blank(),
                                                                                                                                                                 panel.grid.minor = element_blank(),
                                                                                                                                                                 panel.border = element_blank(),
@@ -431,45 +458,40 @@ ggplot(aes(x=year, y=Averagebio, group=herd_subclass), data=year2) +
                    fontface="bold",
                    label.size = NA,
                    nudge_x = 1.2,
-                   na.rm = TRUE)
+                   na.rm = TRUE,show.legend  = F)
 
-ggsave(
-  "Figure6.jpeg",
-  plot = last_plot(),
-  path = "C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Biomass Publication Drafts/Frontiers Veterinary (For Submission)/Figures",
-  width = 17.5,
-  height = 12,
-  units = "in",
-  dpi = 300)
+jpeg("Figure6.jpeg", res=300, width=17.5, height = 14.5, unit="in")
+d
+dev.off()
 
 ##Average herd Value by Year - Figure 7#####
 year2$adjval <- round(year2$adjval, digits=1)
 
-ggplot(aes(x=year, y=adjval, group=herd_subclass), data=year2) + 
+z <- ggplot(aes(x=year, y=adjval, group=herd_subclass), data=year2) + 
   geom_line(aes(color=herd_subclass), linewidth=1.5)+
   facet_wrap(~ herd_class, ncol=2, scales="free")+
   scale_x_discrete(expand = c(0, 0.5))+
   scale_y_continuous(expand = c(0, 0.5), limits = c(0, NA))+
-  labs(x="Years", y="Average Herd Stock Value (€'000)")+
-  scale_color_manual(name="Herd Subclasses", 
-                     labels = c("BP", 
-                                "BSB", 
-                                "BSW", 
-                                "BSY",
-                                "BSY_nR",
-                                "D",
-                                "DnR_C",
-                                "DnR_nC",
-                                "DRm",
-                                "F",
-                                "M",
-                                "Rdf",
-                                "Sbf",
-                                "Sbm",
-                                "Sbmx",
-                                "Sdm",
-                                "T",
-                                "U"),
+  labs(x="Years", y="Average Herd Stock Value (Thousand Euros, €)")+
+  scale_color_manual(name="Herd Subtypes", 
+                     labels = c("BP"="Beef pedigree ", 
+                                "BSB"="Beef suckling to beef ", 
+                                "BSW"="Beef suckling to weanling", 
+                                "BSY"="Beef suckling to youngstock",
+                                "BSY_nR"="Beef suckling to youngstock non-rearing",
+                                "D"="Standard dairy",
+                                "DnR_C"="Non-rearing dairy contract rearing",
+                                "DnR_nC"="Non-rearing dairy no contract rearing",
+                                "DRm"="Dairy rearing male calves",
+                                "F"="Fattening",
+                                "M"="Mixed production",
+                                "Rdf"="Rearing dairy females",
+                                "Sbf"="Store beef females",
+                                "Sbm"="Store beef males",
+                                "Sbmx"="Store beef mixed",
+                                "Sdm"="Store dairy males",
+                                "T"="Trading",
+                                "U"="Unclassified"),
                      values = c("BP"="#FF3333", 
                                 "BSB"="hotpink4", 
                                 "BSW"="#FF66CC", 
@@ -488,9 +510,10 @@ ggplot(aes(x=year, y=adjval, group=herd_subclass), data=year2) +
                                 "Sdm"="#CCCC00",
                                 "T"="#9900FF",
                                 "U"="#000033"))+
-  theme(legend.position = "none")+
+  theme(legend.position = "bottom", legend.direction = "horizontal")+
   theme(strip.text.x = element_text(size=18, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white")) + 
-  theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
+  theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"))+  theme(legend.title = element_text(size=18, color = "black"), 
+                                                                                                     legend.text = element_text(size=16)) + theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
                                                                                                                                                                 panel.grid.major = element_blank(),
                                                                                                                                                                 panel.grid.minor = element_blank(),
                                                                                                                                                                 panel.border = element_blank(),
@@ -503,16 +526,12 @@ ggplot(aes(x=year, y=adjval, group=herd_subclass), data=year2) +
                    fontface="bold",
                    label.size = NA,
                    nudge_x = 1.2,
-                   na.rm = TRUE)
+                   na.rm = TRUE, show.legend  = F)
 
-ggsave(
-  "Figure7.jpeg",
-  plot = last_plot(),
-  path = "C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Biomass Publication Drafts/Frontiers Veterinary (For Submission)/Figures",
-  width = 17.5,
-  height = 12,
-  units = "in",
-  dpi = 300)
+jpeg("Figure7.jpeg", res=300, width=17.5, height = 14.5, unit="in")
+z
+dev.off()
+
 
 
 #Within Year####
@@ -884,31 +903,31 @@ withinyearadj$herd_class[withinyearadj$herd_class =="U"] <- "Unclassified"
 gc()
 
 ##Average Biomass Graph - Figure 8####
-ggplot(aes(x=month, y=Averagebio, group=herd_subclass), data=withinyear) + 
+p <- ggplot(aes(x=month, y=Averagebio, group=herd_subclass), data=withinyear) + 
   geom_line(aes(color=herd_subclass), linewidth=1.5)+
   facet_wrap(~ herd_class, ncol=2, scales="free")+
   scale_x_discrete(expand = c(0, 0.5), labels =c('1' ="Jan", '2'="Feb", '3'="Mar", '4'="Apr", '5'="May", '6'="Jun", '7'="Jul", '8'="Aug", '9'="Sep", '10' ="Oct", '11' ="Nov", '12'= "Dec"), limits=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"))+
   scale_y_continuous(expand = c(0, 0.5), limits = c(0, NA))+
-  labs(x="Months", y="Average Herd Biomass ('000 kg)")+
-  scale_color_manual(name="Herd Subclasses", 
-                     labels = c("BP", 
-                                "BSB", 
-                                "BSW", 
-                                "BSY",
-                                "BSY_nR",
-                                "D",
-                                "DnR_C",
-                                "DnR_nC",
-                                "DRm",
-                                "F",
-                                "M",
-                                "Rdf",
-                                "Sbf",
-                                "Sbm",
-                                "Sbmx",
-                                "Sdm",
-                                "T",
-                                "U"),
+  labs(x="Months", y="Average Herd Biomass (Thousand kg)")+
+  scale_color_manual(name="Herd Subtypes", 
+                     labels = c("BP"="Beef pedigree ", 
+                                "BSB"="Beef suckling to beef ", 
+                                "BSW"="Beef suckling to weanling", 
+                                "BSY"="Beef suckling to youngstock",
+                                "BSY_nR"="Beef suckling to youngstock non-rearing",
+                                "D"="Standard dairy",
+                                "DnR_C"="Non-rearing dairy contract rearing",
+                                "DnR_nC"="Non-rearing dairy no contract rearing",
+                                "DRm"="Dairy rearing male calves",
+                                "F"="Fattening",
+                                "M"="Mixed production",
+                                "Rdf"="Rearing dairy females",
+                                "Sbf"="Store beef females",
+                                "Sbm"="Store beef males",
+                                "Sbmx"="Store beef mixed",
+                                "Sdm"="Store dairy males",
+                                "T"="Trading",
+                                "U"="Unclassified"),
                      values = c("BP"="#FF3333", 
                                 "BSB"="hotpink4", 
                                 "BSW"="#FF66CC", 
@@ -927,9 +946,10 @@ ggplot(aes(x=month, y=Averagebio, group=herd_subclass), data=withinyear) +
                                 "Sdm"="#CCCC00",
                                 "T"="#9900FF",
                                 "U"="#000033"))+
-  theme(legend.position = "none")+
+  theme(legend.position = "bottom", legend.direction = "horizontal")+
   theme(strip.text.x = element_text(size=18, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white")) + 
-  theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
+  theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"))+  theme(legend.title = element_text(size=18, color = "black"), 
+                                                                                                     legend.text = element_text(size=16)) + theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=18, color="black")) + theme(panel.background = element_blank(),
                                                                                                                                                                 panel.grid.major = element_blank(),
                                                                                                                                                                 panel.grid.minor = element_blank(),
                                                                                                                                                                 panel.border = element_blank(),
@@ -942,43 +962,38 @@ ggplot(aes(x=month, y=Averagebio, group=herd_subclass), data=withinyear) +
                    fontface="bold",
                    label.size = NA,
                    nudge_x = 1.2,
-                   na.rm = TRUE)
+                   na.rm = TRUE, show.legend  = F)
 
-ggsave(
-  "Figure8.jpeg",
-  plot = last_plot(),
-  path = "C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Biomass Publication Drafts/Frontiers Veterinary (For Submission)/Figures",
-  width = 17.5,
-  height = 12,
-  units = "in",
-  dpi = 300)
+jpeg("Figure8.jpeg", res=300, width=17.5, height = 14.5, unit="in")
+p
+dev.off()
 
 ##Average Value Graph - Figure 9####
-ggplot(aes(x=month, y=adjvaltotal, group=herd_subclass), data=withinyearadj) + 
+g <- ggplot(aes(x=month, y=adjvaltotal, group=herd_subclass), data=withinyearadj) + 
   geom_line(aes(color=herd_subclass), linewidth=1.5)+
   facet_wrap(~ herd_class, ncol=2, scales="free")+
   scale_x_discrete(expand = c(0, 0.5), labels =c('1' ="Jan", '2'="Feb", '3'="Mar", '4'="Apr", '5'="May", '6'="Jun", '7'="Jul", '8'="Aug", '9'="Sep", '10' ="Oct", '11' ="Nov", '12'= "Dec"), limits=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"))+
   scale_y_continuous(expand = c(0, 0.5), limits = c(0, NA))+
-  labs(x="Months", y="Average Herd Stock Value (Adjusted €'000)")+
-  scale_color_manual(name="Herd Subclasses", 
-                     labels = c("BP", 
-                                "BSB", 
-                                "BSW", 
-                                "BSY",
-                                "BSY_nR",
-                                "D",
-                                "DnR_C",
-                                "DnR_nC",
-                                "DRm",
-                                "F",
-                                "M",
-                                "Rdf",
-                                "Sbf",
-                                "Sbm",
-                                "Sbmx",
-                                "Sdm",
-                                "T",
-                                "U"),
+  labs(x="Months", y="Average Herd Stock Value (Thousand Euros, €)")+
+  scale_color_manual(name="Herd Subtypes", 
+                     labels = c("BP"="Beef pedigree ", 
+                                "BSB"="Beef suckling to beef ", 
+                                "BSW"="Beef suckling to weanling", 
+                                "BSY"="Beef suckling to youngstock",
+                                "BSY_nR"="Beef suckling to youngstock non-rearing",
+                                "D"="Standard dairy",
+                                "DnR_C"="Non-rearing dairy contract rearing",
+                                "DnR_nC"="Non-rearing dairy no contract rearing",
+                                "DRm"="Dairy rearing male calves",
+                                "F"="Fattening",
+                                "M"="Mixed production",
+                                "Rdf"="Rearing dairy females",
+                                "Sbf"="Store beef females",
+                                "Sbm"="Store beef males",
+                                "Sbmx"="Store beef mixed",
+                                "Sdm"="Store dairy males",
+                                "T"="Trading",
+                                "U"="Unclassified"),
                      values = c("BP"="#FF3333", 
                                 "BSB"="hotpink4", 
                                 "BSW"="#FF66CC", 
@@ -997,9 +1012,10 @@ ggplot(aes(x=month, y=adjvaltotal, group=herd_subclass), data=withinyearadj) +
                                 "Sdm"="#CFA50A",
                                 "T"="#9900FF",
                                 "U"="#000033"))+
-  theme(legend.position = "none")+
+  theme(legend.position = "bottom", legend.direction = "horizontal")+
   theme(strip.text.x = element_text(size=20, color="black", face="bold.italic"), strip.background = element_rect(colour="white", fill="white")) + 
-  theme(axis.text = element_text(size = 18), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=20, color="black")) + theme(panel.background = element_blank(),
+  theme(axis.text = element_text(size = 18), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"))+  theme(legend.title = element_text(size=18, color = "black"), 
+                                                                                                     legend.text = element_text(size=16)) + theme(axis.text = element_text(size = 16), plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) + theme(axis.title = element_text(size=20, color="black")) + theme(panel.background = element_blank(),
                                                                                                                                                                 panel.grid.major = element_blank(),
                                                                                                                                                                 panel.grid.minor = element_blank(),
                                                                                                                                                                 panel.border = element_blank(),
@@ -1012,16 +1028,12 @@ ggplot(aes(x=month, y=adjvaltotal, group=herd_subclass), data=withinyearadj) +
                    fontface="bold",
                    label.size = NA,
                    nudge_x = 1.2,
-                   na.rm = TRUE)
+                   na.rm = TRUE, show.legend  = F)
 
-ggsave(
-  "Figure9.jpeg",
-  plot = last_plot(),
-  path = "C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Biomass Publication Drafts/Frontiers Veterinary (For Submission)/Figures",
-  width = 17.5,
-  height = 12,
-  units = "in",
-  dpi = 300)
 
+jpeg("Figure9.jpeg", res=300, width=17.5, height = 14.5, unit="in")
+g
+dev.off()
 
 gc()
+
