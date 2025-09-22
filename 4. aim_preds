@@ -24,7 +24,7 @@ for (i in 1:length(yearlist)){
   
   
 df <- 
-       fread("C:/Users/Emma-Jane Murray/University College Dublin/from_jamie/monthly_11_21.csv",
+       fread(#"file pathway"#,
              select=c("tag", "herd", "dob", "sex", "breed", 
                                          paste("jan", yearlist[i], sep="_"),
                                          paste("feb", yearlist[i], sep="_"),
@@ -155,3 +155,4 @@ write.csv(herd, paste("agg_by_herd", paste("20", yearlist[i], sep=""), ".csv", s
 }
 
 gc()
+
