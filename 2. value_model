@@ -1,5 +1,5 @@
 #set up####
-setwd("C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Data/Edited/Reactor Data/csv")
+#setwd("#pathway#")#
 
 data <- read.csv("Data.csv")
 
@@ -64,3 +64,4 @@ segm_eu_M <- segmented(lmodMe <- lm(ELIGIBLE_VALUE ~ breedtype + month + year + 
 
 rm(data, data_eu, samp_eu, sampF_eu, sampM_eu)
 gc()
+
