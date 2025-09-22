@@ -1,7 +1,7 @@
 
 ##need to run analysis 31-1-24 first to fit the models
 
-setwd("C:/Users/UCD/OneDrive - University College Dublin/NON JOHNES VET/Projects/GBADS/Biomass study/Biomass data")
+#setwd("#pathway#")#
 
 library(stringr)
 library(dplyr)
@@ -220,6 +220,7 @@ comb <- left_join(mart_pred, beef_cumm)
 ##write outputs
 write.csv(join, "dairy_mart_validation.csv")
 write.csv(comb, "beef_mart_validation.csv")
+
 
 
 
