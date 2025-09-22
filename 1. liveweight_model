@@ -10,7 +10,7 @@ library(tidyr)
 library(tidyverse)
 library(segmented)
 
-setwd("C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Data/Edited/Reactor Data/csv")
+#setwd("#pathway#")#
 
 data <- read.csv("Data.csv")#this is the cleaned data#
 
@@ -103,3 +103,4 @@ segm_kg_M <- segmented(lmodM <- lm(LIVE_WEIGHT ~ age + month + year + breedtype,
 
 rm(data, samp, names)
 gc()
+
