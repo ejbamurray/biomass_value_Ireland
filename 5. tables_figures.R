@@ -12,7 +12,7 @@ library(ggrepel)
 library(ggpubr)
 library(tidyverse)
 
-setwd("C:/Users/Emma-Jane Murray/OneDrive - University College Dublin/Biomass/Data/Edited/AIM")
+#setwd("#pathway#")#
 
 
 #Add Herd Types####
@@ -21,7 +21,7 @@ df21$herd <-gsub('"',"",df21$herd)
 df21$month <-gsub('"',"",df21$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2021", "class_sub_2021"))
 herddf <- rename(herddf, herd_subclass=class_sub_2021)
 herddf <- rename(herddf, herd_class=class_2021)
@@ -34,7 +34,7 @@ df20$herd <-gsub('"',"",df20$herd)
 df20$month <-gsub('"',"",df20$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2020", "class_sub_2020"))
 herddf <- rename(herddf, herd_subclass=class_sub_2020)
 herddf <- rename(herddf, herd_class=class_2020)
@@ -47,7 +47,7 @@ df19$herd <-gsub('"',"",df19$herd)
 df19$month <-gsub('"',"",df19$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2019", "class_sub_2019"))
 herddf <- rename(herddf, herd_subclass=class_sub_2019)
 herddf <- rename(herddf, herd_class=class_2019)
@@ -60,7 +60,7 @@ df18$herd <-gsub('"',"",df18$herd)
 df18$month <-gsub('"',"",df18$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2018", "class_sub_2018"))
 herddf <- rename(herddf, herd_subclass=class_sub_2018)
 herddf <- rename(herddf, herd_class=class_2018)
@@ -73,7 +73,7 @@ df17$herd <-gsub('"',"",df17$herd)
 df17$month <-gsub('"',"",df17$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2017", "class_sub_2017"))
 herddf <- rename(herddf, herd_subclass=class_sub_2017)
 herddf <- rename(herddf, herd_class=class_2017)
@@ -86,7 +86,7 @@ df16$herd <-gsub('"',"",df16$herd)
 df16$month <-gsub('"',"",df16$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2016", "class_sub_2016"))
 herddf <- rename(herddf, herd_subclass=class_sub_2016)
 herddf <- rename(herddf, herd_class=class_2016)
@@ -99,7 +99,7 @@ df15$herd <-gsub('"',"",df15$herd)
 df15$month <-gsub('"',"",df15$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2015", "class_sub_2015"))
 herddf <- rename(herddf, herd_subclass=class_sub_2015)
 herddf <- rename(herddf, herd_class=class_2015)
@@ -112,7 +112,7 @@ df14$herd <-gsub('"',"",df14$herd)
 df14$month <-gsub('"',"",df14$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2014", "class_sub_2014"))
 herddf <- rename(herddf, herd_subclass=class_sub_2014)
 herddf <- rename(herddf, herd_class=class_2014)
@@ -125,7 +125,7 @@ df13$herd <-gsub('"',"",df13$herd)
 df13$month <-gsub('"',"",df13$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2013", "class_sub_2013"))
 herddf <- rename(herddf, herd_subclass=class_sub_2013)
 herddf <- rename(herddf, herd_class=class_2013)
@@ -138,7 +138,7 @@ df12$herd <-gsub('"',"",df12$herd)
 df12$month <-gsub('"',"",df12$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2012", "class_sub_2012"))
 herddf <- rename(herddf, herd_subclass=class_sub_2012)
 herddf <- rename(herddf, herd_class=class_2012)
@@ -151,7 +151,7 @@ df11$herd <-gsub('"',"",df11$herd)
 df11$month <-gsub('"',"",df11$month)
 gc()
 
-herddf <- fread("C:/Users/Emma-Jane Murray/University College Dublin/Biomass Paper/htype_2011_21_updated_Dec_2023.csv",
+herddf <- fread(#"filepathway/htype_2011_21_updated_Dec_2023.csv"#,
                 select=c("herd", "class_2011", "class_sub_2011"))
 herddf <- rename(herddf, herd_subclass=class_sub_2011)
 herddf <- rename(herddf, herd_class=class_2011)
@@ -1022,5 +1022,6 @@ ggsave(
   height = 12,
   units = "in",
   dpi = 300)
+
 
 gc()
